@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+
+#  frontend:
+#    build:
+#      context: .
+#      dockerfile: frontend/Dockerfile
+#    ports:
+#      - 3000:3000
+#    expose:
+#      - 3000
+
+  server:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: python3 ./backend/api/api.py
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
+    depends_on:
+      - mongo
+    restart: always
+
+  ml_api:
+    build:
+      context: .
+      dockerfile: nn_microservice/Dockerfile
+    command: python3 ./nn_microservice/api/api_ml.py
+    ports:
+      - 5001:5001
+    expose:
+      - 5001
+    depends_on:
+      - server
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
