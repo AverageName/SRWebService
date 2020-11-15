@@ -7,9 +7,10 @@ RUN pip3 install flask \
                  pillow \
                  requests
 
-RUN pip3 install flask-mongoengine
+RUN pip3 install flask-mongoengine \
+                 flask_swagger_ui
 
-ADD ./backend/api/* /backend/api/
+ADD ./backend/api/ /backend/api/
 
 CMD ["pwd"]
 

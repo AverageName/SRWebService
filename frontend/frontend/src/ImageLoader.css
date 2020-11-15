@@ -1,4 +1,61 @@
 .ImageLoader
 {
     color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.uploadImage {
+    margin: auto;
+    width: max-content;
+    display: block;
+}
+
+#output {
+    width: 50%;
+    color:white;
+    object-fit: scale-down;
+    display: block;
+    margin: auto;
+
+}
+
+.imageWrapper2 {
+    width: 100%;
+}
+.imageWrapper1 {
+    width: 100%;
+}
+
+.linkWrapper {
+    width: 100%;
+}
+
+.buttonWrapper {
+    width: 100%;
+}
+
+.inputWrapper {
+    width: 100%;
+}
+
+#submitButton {
+    width: max-content;
+    display: block;
+    margin: auto;
+}
+
+#result {
+    width: 50%;
+    display: block;
+    object-fit: scale-down;
+    margin: auto;
+}
+
+#download {
+    width: 50%;
+    display: block;
+    margin: auto;
 }

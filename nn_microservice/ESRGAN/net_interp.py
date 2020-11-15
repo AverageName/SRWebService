@@ -4,9 +4,9 @@ from collections import OrderedDict
 
 alpha = float(sys.argv[1])
 
-net_PSNR_path = './nn_microservice/api/RRDB_PSNR_x4.pth'
-net_ESRGAN_path = './nn_microservice/api/RRDB_ESRGAN_x4.pth'
-net_interp_path = './nn_microservice/api/interp_{:02d}.pth'.format(int(alpha*10))
+net_PSNR_path = './nn_microservice/ESRGAN/RRDB_PSNR_x4.pth'
+net_ESRGAN_path = './nn_microservice/ESRGAN/RRDB_ESRGAN_x4.pth'
+net_interp_path = './nn_microservice/ESRGAN/interp_{:02d}.pth'.format(int(alpha*10))
 
 net_PSNR = torch.load(net_PSNR_path)
 net_ESRGAN = torch.load(net_ESRGAN_path)

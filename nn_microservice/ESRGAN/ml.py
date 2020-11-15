@@ -81,7 +81,7 @@ class RRDBNet(nn.Module):
 
 
 def predict_sr(img):
-    model_path = './nn_microservice/api/interp_08.pth'
+    model_path = './ESRGAN/RRDB_ESRGAN_x4.pth'
     device = torch.device('cpu')
 
     model = RRDBNet(3, 3, 64, 23, gc=32)
@@ -94,24 +94,22 @@ def predict_sr(img):
     img_LR = img.unsqueeze(0)
     img_LR = img_LR.to(device)
 
-    img_bicubic = torch.nn.functional.interpolate(img_LR, scale_factor=4, mode="bicubic")
+    #img_bicubic = torch.nn.functional.interpolate(img_LR, scale_factor=4, mode="bicubic")
 
     with torch.no_grad():
         output = model(img_LR).data.squeeze().float().cpu().clamp_(0, 1).numpy()
     output = np.transpose(output[[2, 1, 0], :, :], (1, 2, 0))
     output = (output * 255).astype(np.uint8)
 
-    bicubic = img_bicubic.squeeze().float().cpu().clamp_(0, 1).numpy()
-    bicubic = np.transpose(bicubic[[2, 1, 0], :, :], (1, 2, 0))
-    bicubic = (bicubic * 255).astype(np.uint8)
+    #bicubic = img_bicubic.squeeze().float().cpu().clamp_(0, 1).numpy()
+    #bicubic = np.transpose(bicubic[[2, 1, 0], :, :], (1, 2, 0))
+    #bicubic = (bicubic * 255).astype(np.uint8)
 
-    return output, bicubic
+    return output#, bicubic
 
 if __name__ == "__main__":
-    img = Image.open('/home/max/docker_test-docker/nn_microservice/api/cat.jpg')
+    img = Image.open('/home/max/docker_test-docker/nn_microservice/images/comic.png')
     img = np.array(img)
-    output, bicubic = predict_sr(img)
+    output = predict_sr(img)
     img_result = Image.fromarray(output)
-    bicubic_result = Image.fromarray(bicubic)
-    img_result.save('/home/max/docker_test-docker/nn_microservice/api/cat_hr.jpg')
-    bicubic_result.save('/home/max/docker_test-docker/nn_microservice/api/cat_bicubic.jpg')
+    img_result.save('/home/max/docker_test-docker/nn_microservice/ESRGAN/cat_hr.jpg')

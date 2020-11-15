@@ -26,6 +26,7 @@ export default class ImageLoader extends React.Component {
     loadFile = (event) => {
         let reader = new FileReader();
         let output = document.getElementById('output');
+
         // this.setState = {
         //     image: event.target.files[0]
         // };
@@ -46,7 +47,7 @@ export default class ImageLoader extends React.Component {
     };
 
     sendData = async (event) => {
-        const apiUrl = "http://172.18.0.1:5000/add";
+        const apiUrl = "http://127.0.0.1:5000/add";
         // var reader = new FileReader();
         console.log(this.state.image);
         const response = await fetch(apiUrl, {
@@ -55,7 +56,7 @@ export default class ImageLoader extends React.Component {
                 photo: this.state.image
             }),
             headers: {
-                'Access-Control-Allow-Origin': 'http://172.18.0.1:5000'
+                'Access-Control-Allow-Origin': '*'
             }
             })
 
@@ -65,12 +66,12 @@ export default class ImageLoader extends React.Component {
 
         console.log(jsonResponse.id);
 
-        const nnApiUrl = "http://172.18.0.1:5000/use_nn?id=" + jsonResponse.id;
+        const nnApiUrl = "http://127.0.0.1:5000/use_nn?id=" + jsonResponse.id;
 
         const nnResponse = await fetch(nnApiUrl, {
             method: "GET",
             headers: {
-                'Access-Control-Allow-Origin': 'http://172.18.0.1:5000'
+                'Access-Control-Allow-Origin': '*'
             }
         });
 
@@ -83,6 +84,12 @@ export default class ImageLoader extends React.Component {
                 'src', 'data:image/jpg;base64,' + nnJsonResponse.img);
 
         console.log('data:image/png;base64,' + nnJsonResponse.img)
+
+        let download = document.getElementById('download');
+
+        download.setAttribute('href',
+                            'data:image/jpg;base64,' + nnJsonResponse.img);
+        //download.click();
         //let output = document.getElementById('output');
         //console.log(this.state.image);
         //data = this.toDataUrl(output.src, )
@@ -103,10 +110,21 @@ export default class ImageLoader extends React.Component {
     render() {
         return (
             <div className="ImageLoader">
-                    <input type='file' name="photo" className="uploadImage" accept="image/*" onChange={this.loadFile}/>
-                    <img id="output"/>
-                    <input type="submit" value="Send" onClick={this.sendData}/>
-                    <img id="result"/>
+                    <div className="inputWrapper">
+                        <input type='file' name="photo" className="uploadImage" accept="image/*" onChange={this.loadFile}/>
+                    </div>
+                    <div className="imageWrapper1">
+                        <img id="output"/>
+                    </div>
+                    <div className="buttonWrapper">
+                        <input type="submit" value="Send" onClick={this.sendData} id="submitButton"/>
+                    </div>
+                    <div className="imageWrapper2">
+                        <img id="result"/>
+                    </div>
+                    <div className="linkWrapper">
+                        <a download="result.jpg" id="download">Download</a>
+                    </div>
             </div>
         );
     }

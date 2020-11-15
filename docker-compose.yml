@@ -26,9 +26,9 @@ services:
 
   ml_api:
     build:
-      context: .
-      dockerfile: nn_microservice/Dockerfile
-    command: python3 ./nn_microservice/api/api_ml.py
+      context: ./nn_microservice/
+      dockerfile: Dockerfile
+    command: python3 api_ml.py
     ports:
       - 5001:5001
     expose:

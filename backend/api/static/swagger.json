@@ -1,0 +1,9 @@
+{
+  "swagger": "2.0",
+  "openapi": "2.8.0",
+  "info": {
+    "description": "LOL",
+    "version": "1.8.8",
+    "title": "Max-swagger"
+  }
+}
