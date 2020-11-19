@@ -10,6 +10,7 @@
 *.jpg
 package-lock.json
 
-**/.idea
+**/vcs.xml
+.idea
 node_modules
 
