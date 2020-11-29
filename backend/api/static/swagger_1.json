@@ -1,0 +1,220 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Service for Super Resolution task",
+    "version": "1.0.0",
+    "title": "Swagger SRWebService"
+  },
+  "tags": [
+    {
+      "name": "mainBackend",
+      "description": "All methods of main backend"
+    },
+    {
+      "name": "nnMicroserviceBackend",
+      "description": "All methods of NN backend"
+    },
+    {
+      "name": "frontend",
+      "description": "All methods of frontend"
+    }
+  ],
+  "paths": {
+    "/add": {
+      "post": {
+        "tags": [
+          "mainBackend"
+        ],
+        "summary": "Upload an image to main backend",
+        "description": "",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Photo which needs to be processed",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Image"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/use_nn": {
+      "get": {
+        "tags": [
+          "mainBackend"
+        ],
+        "summary": "Use one of the proposed neural networks for SR",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "description": "Use one of the proposed neural networks for SR",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/BackendResponse"
+            }
+          },
+          "401": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "tags": [
+          "nnMicroserviceBackend"
+        ],
+        "summary": "Use one of the NNs",
+        "description": "Usage of one of the NNs",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NNReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/NNResponse"
+            }
+          },
+          "401": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Image": {
+      "type": "object",
+      "properties": {
+        "photo": {
+          "type": "string"
+        }
+      }
+    },
+    "Id": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid4"
+        }
+      }
+    },
+    "BackendResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "img": {
+          "type": "string"
+        },
+        "new_shape": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "Id_with_model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid4"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "NNReq": {
+      "type": "object",
+      "properties": {
+        "img": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "model_type": {
+          "type": "string"
+        }
+      }
+    },
+    "NNResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "img": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

@@ -66,7 +66,10 @@ export default class ImageLoader extends React.Component {
 
         console.log(jsonResponse.id);
 
-        const nnApiUrl = "http://127.0.0.1:5000/use_nn?id=" + jsonResponse.id;
+        var e = document.getElementById("selector");
+        var modelType = e.value;
+
+        const nnApiUrl = "http://127.0.0.1:5000/use_nn?id=" + jsonResponse.id + "&type=" + modelType;
 
         const nnResponse = await fetch(nnApiUrl, {
             method: "GET",
@@ -81,14 +84,14 @@ export default class ImageLoader extends React.Component {
 
         document.getElementById('result')
             .setAttribute(
-                'src', 'data:image/jpg;base64,' + nnJsonResponse.img);
+                'src', 'data:image/png;base64,' + nnJsonResponse.img);
 
         console.log('data:image/png;base64,' + nnJsonResponse.img)
 
         let download = document.getElementById('download');
 
         download.setAttribute('href',
-                            'data:image/jpg;base64,' + nnJsonResponse.img);
+                            'data:image/png;base64,' + nnJsonResponse.img);
         //download.click();
         //let output = document.getElementById('output');
         //console.log(this.state.image);
@@ -116,6 +119,13 @@ export default class ImageLoader extends React.Component {
                     <div className="imageWrapper1">
                         <img id="output"/>
                     </div>
+                    <div className="selectorWrapper">
+                        <select id="selector">
+                            <option value="DRLN"> DRLN (x4) </option>
+                            <option value="ESRGAN"> ESRGAN (x4) </option>
+                            <option value="CSNLN"> CSNLN (x2) </option>
+                        </select>
+                    </div>
                     <div className="buttonWrapper">
                         <input type="submit" value="Send" onClick={this.sendData} id="submitButton"/>
                     </div>
@@ -123,7 +133,7 @@ export default class ImageLoader extends React.Component {
                         <img id="result"/>
                     </div>
                     <div className="linkWrapper">
-                        <a download="result.jpg" id="download">Download</a>
+                        <a download="result.png" id="download">Download</a>
                     </div>
             </div>
         );

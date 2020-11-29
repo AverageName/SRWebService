@@ -5,49 +5,44 @@ import base64
 import json
 import io
 import numpy as np
-# from ml import predict_sr
 from PIL import Image
 import uuid
 import requests
 import sys
 from io import BytesIO
-from flask_swagger_ui import get_swaggerui_blueprint
 import os
 
 
 app = flask.Flask(__name__)
-# app._static_folder = "/backend/api/static/"
 app.config["DEBUG"] = True
 
-#Swagger
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
-SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL
-)
-app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-
-@app.route('/static/<path:path>', methods=["GET"])
-def send_static(path):
-    return send_from_directory('/backend/api/static', path)
-## Swagger
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 db = DataBase()
 
 def _build_cors_prelight_response():
     response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
     response.headers.add("Access-Control-Allow-Headers", "*")
     response.headers.add("Access-Control-Allow-Methods", "*")
     return response
 
 
+@app.route('/static/<path:path>/', methods=["OPTIONS", "GET"])
+def send_static(path):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
+    else:
+        response = make_response(send_from_directory('/backend/api/static/', path))
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
 @app.route('/', methods=['GET'])
 def home_page():
     return '''<h1> Hello world </h1>'''
 
-#Add convertion to base64 when adding new image
 @app.route('/add', methods=['POST', "OPTIONS"])
 def add_image():
     if request.method == "OPTIONS":
@@ -72,7 +67,6 @@ def add_image():
                 }
             )
 
-        response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
 @app.route('/use_nn', methods=['GET', 'OPTIONS'])
@@ -81,6 +75,7 @@ def predict():
         return _build_cors_prelight_response()
     else:
         img_id = request.args.get("id")
+        model_type = request.args.get("type")
         req = db.images.find_one({"id": img_id})
 
         if req is None:
@@ -88,22 +83,20 @@ def predict():
                 "status": 401,
                 "error": "There is no image with such id"
             })
-            response.headers.add("Access-Control-Allow-Origin", "*")
 
             return response
 
         ret = requests.post('http://172.17.0.1:5001/', json={
                                                             "id": img_id,
                                                             "img": req['image'],
+                                                            "model_type": model_type
                                                             })
-        # print(ret.data, file=sys.stderr)
         data = ret.json()
         if data['status'] != 200:
             response = jsonify({
                 "status": 401,
                 "error": data['error']
             })
-            response.headers.add("Access-Control-Allow-Origin", "*")
 
             return response
 
@@ -112,7 +105,6 @@ def predict():
                 "new_shape": data["shape"]
                 })
 
-        response.headers.add("Access-Control-Allow-Origin", "*")
         print(response, file=sys.stderr)
         print(response.headers, file=sys.stderr)
 

@@ -108,8 +108,8 @@ def predict_sr(img):
     return output#, bicubic
 
 if __name__ == "__main__":
-    img = Image.open('/home/max/docker_test-docker/nn_microservice/images/comic.png')
+    img = Image.open('/home/max/docker_test-docker/nn_microservice/images/butterfly_LRBD_x3.png')
     img = np.array(img)
     output = predict_sr(img)
     img_result = Image.fromarray(output)
-    img_result.save('/home/max/docker_test-docker/nn_microservice/ESRGAN/cat_hr.jpg')
+    img_result.save('/home/max/docker_test-docker/nn_microservice/images/cat_hr.png')

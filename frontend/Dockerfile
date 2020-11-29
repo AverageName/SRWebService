@@ -8,6 +8,8 @@ COPY frontend/frontend/package-lock.json /app/package-lock.json
 
 RUN npm install
 RUN npm install react-scripts -g
+RUN npm install swagger-ui
+RUN npm install swagger-ui-react
 
 COPY frontend/frontend/ /app/
 

@@ -25,7 +25,6 @@ class MyImage(data.Dataset):
         self.filelist = []
         self.imnamelist = []
 
-        print(os.path.join(apath, 'cat.jpg'))
 
         if not train:
             for f in os.listdir(apath):
