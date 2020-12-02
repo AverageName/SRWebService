@@ -17,14 +17,20 @@ Then go to localhost:3000 and will see your SR web service.
   ![Original](./examples/comic.png)
   
   2. CSNLN(x2)         
-  
+   Architecture:          
+  ![architecture](./examples/CSNLN_architecture.png)        
+   Result:    
   ![CSNLN](./examples/result_csnln.png)
   
   3. DRLN(x4)     
-  
+   Architecture:
+  ![architecture](./examples/DRLN_architecture.png)    
+   Result:     
   ![DRLN](./examples/result_drln.png) 
   
-  4. ESRGAN(x4)
-  
+  4. ESRGAN(x4)        
+   Architecture:         
+  ![architecture](./examples/ESRGAN_architecture.png)     
+   Result:      
   ![ESRGAN](./examples/result(4).png)
   
