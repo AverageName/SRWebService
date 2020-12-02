@@ -23,7 +23,7 @@ Then go to localhost:3000 and will see your SR web service.
   ![CSNLN](./examples/result_csnln.png)
   
   3. DRLN(x4)     
-   Architecture:
+   Architecture:         
   ![architecture](./examples/DRLN_architecture.png)    
    Result:     
   ![DRLN](./examples/result_drln.png) 
